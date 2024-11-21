@@ -7,9 +7,10 @@ int main(){
     printf("asd? [y/n]:\n");
     int fd = open("/dev/tty", O_RDONLY);
     char c;
-    struct termios tty;
+    struct termios tty, save;
     tcgetattr(fd, &tty);
-    tty.c_cflag &= ~ICANON;
+    save = tty;
+    tty.c_lflag &= ~(ICANON | ECHO);
     tcsetattr(fd, TCSAFLUSH, &tty);
     read(fd, &c, 1);
     if(c == 'y' || c == 'n'){
@@ -18,5 +19,6 @@ int main(){
     else{
         printf("wrong symbol\n");
     }
+    tcsetattr(fd, TCSANOW, &save);
     exit(0);
 }
