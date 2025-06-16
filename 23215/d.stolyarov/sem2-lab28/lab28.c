@@ -92,8 +92,8 @@ int main(int argc, char *argv[]){
 
     
     //делаем запрос к серверу
-    char request[BUF*2 + 50] = {0};
-    sprintf(request, "GET /%s HTTP/1.0\r\nHost: %s\r\n\r\n", path, hostname);
+    char request[BUF*2 + 100] = {0};
+    sprintf(request, "GET /%s HTTP/1.0\r\nHost: %s\r\nUser-Agent: ParalleloParalla\r\nConnection: close\r\n\r\n", path, hostname);
     int reqLen = strlen(request);
     if(write(sock, request, reqLen) != reqLen){
         perror("Failed writing request");
