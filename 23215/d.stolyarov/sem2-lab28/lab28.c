@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <termios.h>
 #include <sys/time.h>
+#include <netdb.h>
 #define EXAMPLE "http://example.com"
 #define SCREEN_HEIGHT 25 //в количестве строк
 #define BUF 666
