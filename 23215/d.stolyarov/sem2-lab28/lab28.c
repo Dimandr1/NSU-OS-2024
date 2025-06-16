@@ -20,11 +20,11 @@ typedef struct ar{
 int main(int argc, char *argv[]){
     
     if(argc < 2){
-        fprintf(stderr, "Missing argument");
+        fprintf(stderr, "Missing argument\n");
         exit(1);
     }
     if(strlen(argv[1]) > 500){
-        fprintf(stderr, "Too long url");
+        fprintf(stderr, "Too long url\n");
         exit(2);
     }
     //argv[1] = EXAMPLE;
@@ -35,7 +35,7 @@ int main(int argc, char *argv[]){
     char portStr[BUF] = {0};
     int port = 80;
     if(sscanf(argv[1], "http://%s", hostname) != 1){
-        fprintf(stderr, "Wrong url");
+        fprintf(stderr, "Wrong url\n");
         exit(3);
     }
     for(int i = 0; hostname[i] != 0; i++){
@@ -61,11 +61,11 @@ int main(int argc, char *argv[]){
     //находим адрес по имени
     struct hostent *host = gethostbyname(hostname);
     if(host == NULL){
-        fprintf(stderr, "Host not found");
+        fprintf(stderr, "Host not found\n");
         exit(4);
     }
     if(*(host->h_addr_list) == 0){
-        fprintf(stderr, "No addresses found");
+        fprintf(stderr, "No addresses found\n");
         exit(5);
     }
     struct in_addr in;
@@ -96,7 +96,7 @@ int main(int argc, char *argv[]){
     sprintf(request, "GET /%s HTTP/1.0\r\nHost: %s\r\nUser-Agent: ParalleloParalla\r\nConnection: close\r\n\r\n", path, hostname);
     int reqLen = strlen(request);
     if(write(sock, request, reqLen) != reqLen){
-        fprintf(stderr, "Failed writing request");
+        fprintf(stderr, "Failed writing request\n");
         close(sock);
         exit(8);
     }
