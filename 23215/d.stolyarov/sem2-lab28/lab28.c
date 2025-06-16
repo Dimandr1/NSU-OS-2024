@@ -7,7 +7,6 @@
 #include <unistd.h>
 #include <termios.h>
 #include <sys/time.h>
-#include <netdb.h>
 #define EXAMPLE "http://example.com"
 #define SCREEN_HEIGHT 25 //в количестве строк
 #define BUF 666
@@ -62,7 +61,7 @@ int main(int argc, char *argv[]){
     //находим адрес по имени
     struct hostent *host = gethostbyname(hostname);
     if(host == NULL){
-        herror("Host not found");
+        fprintf(stderr, "Host not found");
         exit(4);
     }
     if(*(host->h_addr_list) == 0){
