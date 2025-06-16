@@ -20,11 +20,11 @@ typedef struct ar{
 int main(int argc, char *argv[]){
     
     if(argc < 2){
-        perror("Missing arguement");
+        fprintf(stderr, "Missing argument");
         exit(1);
     }
     if(strlen(argv[1]) > 500){
-        perror("Too long url");
+        fprintf(stderr, "Too long url");
         exit(2);
     }
     //argv[1] = EXAMPLE;
@@ -35,7 +35,7 @@ int main(int argc, char *argv[]){
     char portStr[BUF] = {0};
     int port = 80;
     if(sscanf(argv[1], "http://%s", hostname) != 1){
-        perror("Wrong url");
+        fprintf(stderr, "Wrong url");
         exit(3);
     }
     for(int i = 0; hostname[i] != 0; i++){
@@ -61,11 +61,11 @@ int main(int argc, char *argv[]){
     //находим адрес по имени
     struct hostent *host = gethostbyname(hostname);
     if(host == NULL){
-        perror("Host not found");
+        herror("Host not found");
         exit(4);
     }
     if(*(host->h_addr_list) == 0){
-        perror("No addresses found");
+        fprintf(stderr, "No addresses found");
         exit(5);
     }
     struct in_addr in;
@@ -96,7 +96,7 @@ int main(int argc, char *argv[]){
     sprintf(request, "GET /%s HTTP/1.0\r\nHost: %s\r\nUser-Agent: ParalleloParalla\r\nConnection: close\r\n\r\n", path, hostname);
     int reqLen = strlen(request);
     if(write(sock, request, reqLen) != reqLen){
-        perror("Failed writing request");
+        fprintf(stderr, "Failed writing request");
         close(sock);
         exit(8);
     }
@@ -145,6 +145,7 @@ int main(int argc, char *argv[]){
             if(response_buffer.curSize == response_buffer.limitSize - 1){
                 response_buffer.limitSize *= 2;
                 response_buffer.buf = (char*) realloc(response_buffer.buf, sizeof(char) * response_buffer.limitSize);
+                memset(response_buffer.buf + response_buffer.limitSize/2, 0, response_buffer.limitSize/2);
             }
             int ret = read(sock, response_buffer.buf + response_buffer.curSize, response_buffer.limitSize - response_buffer.curSize - 1);
             response_buffer.curSize += ret;
